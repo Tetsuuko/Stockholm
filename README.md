@@ -4,13 +4,13 @@ This program allows you to encrypt files or decrypt them using the correct encry
 
 ## Installation
 1. Clone the repository:
-	git clone https://github.com/
+	`git clone https://github.com/Tetsuuko/Stockholm`
 
  2. Compile the program (need cargo and rustc 1.85.*):
-	make stockholm
+	`make stockholm`
 
 3. Run the programm:
-	./target/release/stockholm
+	`./target/release/stockholm`
 
 ## Warning
 - This project is for educational purposes only. You should never use this type of program for malicious purposes.
@@ -49,7 +49,7 @@ decryption by re-encrypting the same file without using the --reverse option.
 
 - Data is encrypted using 4096 bytes chunks. As XChaCha20-Poly1305 adds a 16 bytes ciphertext
 expansion to the encrypted data, the size of the encrypted file will be :
-			(SIZE OF THE NONCE) + (ORIGINAL FILE SIZE) + 16 * (ORIGINAL FILE SIZE) % 4096
+			`(SIZE OF THE NONCE) + (ORIGINAL FILE SIZE) + 16 * (ORIGINAL FILE SIZE) % 4096`
 
 - The encrypted data is first written to a temporary file. Then, the original file is
 deleted, and the temporary file is renamed using the original file's name with the ".ft" extension added.
